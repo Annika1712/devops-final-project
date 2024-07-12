@@ -2,8 +2,7 @@ provider "aws" {
   region = var.region
 }
 
-# Filter out local zones, which are not currently supported 
-# with managed node groups
+# Filter out local zones, which are not currently supported with managed node groups
 data "aws_availability_zones" "available" {
   filter {
     name   = "opt-in-status"
@@ -12,9 +11,11 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  vpc_name     = "team-1-final-project-vpc"
-  cluster_name = "team-1-final-project-eks-${random_string.suffix.result}"
+  # Network configs
+  vpc_name     = "team-1-fp-vpc"
 
+  # EKS configs
+  cluster_name = "team-1-fp-eks-${random_string.suffix.result}"
   instance_type = "t2.micro"
 }
 
@@ -23,17 +24,23 @@ resource "random_string" "suffix" {
   special = false
 }
 
+# vpc - this is Terraform module to create AWS VPC resources
+# Documentation -> https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest
+# GitHub repo -> https://github.com/terraform-aws-modules/terraform-aws-vpc/blob/v2.15.0/README.md
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "5.8.1"
+  version = "5.9.0"
 
   name = local.vpc_name
 
   cidr = "10.0.0.0/16"
-  azs  = slice(data.aws_availability_zones.available.names, 0, 3)
+  azs  = slice(data.aws_availability_zones.available.names, 0, 2)
 
-  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-  public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+#   private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+#   public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+
+  private_subnets = ["10.0.1.0/24", "10.0.5.0/24"]
+  public_subnets  = ["10.0.2.0/24", "10.0.6.0/24"]
 
   enable_nat_gateway   = true
   single_nat_gateway   = true
@@ -48,12 +55,15 @@ module "vpc" {
   }
 }
 
+# eks - this is Terraform module to create AWS EKS resources
+# Documentation -> https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest
+# GitHub repo -> https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/README.md
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "20.8.5"
+  version = "20.17.2"
 
   cluster_name    = local.cluster_name
-  cluster_version = "1.29"
+  cluster_version = "1.30"
 
   cluster_endpoint_public_access           = true
   enable_cluster_creator_admin_permissions = true
@@ -105,19 +115,23 @@ module "eks" {
   }
 }
 
+# IAM Policy that allows the CSI driver service account to make calls to related services such as EC2 on your behalf.
+# https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonEBSCSIDriverPolicy.html
+# https://aws.amazon.com/blogs/containers/amazon-ebs-csi-driver-is-now-generally-available-in-amazon-eks-add-ons/
+data "aws_iam_policy" "ebs_csi_policy" {
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+}
 
-# https://aws.amazon.com/blogs/containers/amazon-ebs-csi-driver-is-now-generally-available-in-amazon-eks-add-ons/ 
-# data "aws_iam_policy" "ebs_csi_policy" {
-#   arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-# }
-#
-# module "irsa-ebs-csi" {
-#   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-#   version = "5.39.0"
-#
-#   create_role                   = true
-#   role_name                     = "AmazonEKSTFEBSCSIRole-${module.eks.cluster_name}"
-#   provider_url                  = module.eks.oidc_provider
-#   role_policy_arns              = [data.aws_iam_policy.ebs_csi_policy.arn]
-#   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
-# }
+# iam-assumable-role-with-oidc - this is Terraform submodule for IAM module to create AWS IAM resources
+# IAM module documentation -> https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest
+# GitHub repo -> https://github.com/terraform-aws-modules/terraform-aws-iam/blob/v5.41.0/modules/iam-assumable-role-with-oidc/README.md
+module "irsa-ebs-csi" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  version = "5.41.0"
+
+  create_role                   = true
+  role_name                     = "AwsEKSEBSCSIRole-${module.eks.cluster_name}"
+  provider_url                  = module.eks.oidc_provider
+  role_policy_arns              = [data.aws_iam_policy.ebs_csi_policy.arn]
+  oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
+}

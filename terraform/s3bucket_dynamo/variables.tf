@@ -9,4 +9,5 @@ variable "s3bucket_name" {
 
 variable "dynamo_db_name" {
   type = string
+  default = "team1-db_name"
 }

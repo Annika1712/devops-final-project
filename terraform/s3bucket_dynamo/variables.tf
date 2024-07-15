@@ -5,6 +5,7 @@ variable "region" {
 
 variable "s3bucket_name" {
   type = string
+  default = "team1-remotestate"
 }
 
 variable "dynamo_db_name" {

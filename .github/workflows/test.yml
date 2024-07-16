@@ -20,7 +20,7 @@ jobs:
         role-to-assume: arn:aws:iam::851725332718:role/eks_github_oidc-team-1-fp-eks-1Sqxvtqu
         role-session-name: MyFirstTest
         aws-region: eu-central-1
-    - run: aws sts get-identity
+    - run: aws sts get-caller-identity
     - name: Install aws CLI
       run: aws eks update-kubeconfig --region eu-central-1 --name team-1-fp-eks-wMH7zKlz --role-arn arn:aws:iam::851725332718:role/eks_github_oidc-team-1-fp-eks-1Sqxvtqu
     - name: Install kubectl

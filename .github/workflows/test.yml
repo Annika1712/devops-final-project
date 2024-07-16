@@ -1,0 +1,28 @@
+name: test
+on:
+  push:
+    branches: [ "annika/terraform/iam-cicd" ]
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
+jobs: 
+  test:
+    name: test
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install aws CLI
+      run: aws eks update-kubeconfig --region eu-central-1 --name team-1-fp-eks-wMH7zKlz
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v1.7.0
+      with:
+        role-to-assume: arn:aws:iam::851725332718:role/devs-GitHubActions-team-1-fp-eks-wMH7zKlz
+        aws-region: eu-central-1
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v3
+      id: install
+    - run: kubectl apply -f frontend-deployment.yml
+    

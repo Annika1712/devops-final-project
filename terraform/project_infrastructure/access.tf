@@ -47,4 +47,55 @@ module "irsa-ebs-csi" {
   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
 }
 
+#########################################################
+# Third party
+#########################################################
+# Retrieving SSl certificate for OIDC setup of Github Actions
+# https://registry.terraform.io/providers/hashicorp/tls/latest/docs/data-sources/certificate
+data "tls_certificate" "Github_Actions" {
+  url = "https://token.actions.githubusercontent.com"
+}
+
+# OIDC Provider - Github Actions
+resource "aws_iam_openid_connect_provider" "GitHub_Actions" {
+  url = data.tls_certificate.Github_Actions.url
+
+  client_id_list = [
+    # To reduce latency, build in redundancy, and increase session token validity: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_enable-regions.html
+    "sts.amazonaws.com"
+  ]
+
+  thumbprint_list = [data.tls_certificate.Github_Actions.certificates[0].sha1_fingerprint]
+}
+
+# GitHUb Actions role for development stage
+module "Github_Actions_development_role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  version = "5.41.0"
+
+  create_role                   = true
+  role_name                     = "devs-GitHubActions-${module.eks.cluster_name}"
+  provider_url                  = aws_iam_openid_connect_provider.GitHub_Actions.url
+  # https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html#idp_oidc_Create_GitHub
+  oidc_fully_qualified_subjects = ["repo:Annika1712/devops-final-project:ref:refs/heads/annika/terraform/iam"]
+  oidc_fully_qualified_audiences = aws_iam_openid_connect_provider.GitHub_Actions.client_id_list
+}
+
+resource "aws_eks_access_entry" "GithubActions" {
+  cluster_name = module.eks.cluster_name
+  principal_arn = module.Github_Actions_development_role.iam_role_arn
+}
+
+resource "aws_eks_access_policy_association" "GitHubActions" {
+  cluster_name = module.eks.cluster_name
+  # https://docs.aws.amazon.com/eks/latest/userguide/access-policies.html#access-policy-permissions
+  policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy"
+  principal_arn = aws_eks_access_entry.GithubActions.principal_arn
+
+  access_scope {
+    type = "namespace"
+    namespaces = ["development"]
+  }
+}
+
 

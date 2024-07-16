@@ -135,3 +135,13 @@ module "irsa-ebs-csi" {
   role_policy_arns              = [data.aws_iam_policy.ebs_csi_policy.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
 }
+
+
+
+module "alb_ingress_controller"{
+  source = "iplabs/alb-ingress-controller/kubernetes"
+  version = "3.4.0"
+  k8s_cluster_name = local.cluster_name
+  k8s_namespace = "development"
+  k8s_cluster_type = "eks"
+}

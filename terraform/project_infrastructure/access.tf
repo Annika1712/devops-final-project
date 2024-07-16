@@ -68,22 +68,56 @@ resource "aws_iam_openid_connect_provider" "GitHub_Actions" {
   thumbprint_list = [data.tls_certificate.Github_Actions.certificates[0].sha1_fingerprint]
 }
 
-# GitHUb Actions role for development stage
-module "Github_Actions_development_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "5.41.0"
+resource "aws_iam_policy" "EKS_Access" {
+  name        = "EKS_policy"
+  description = "Permission to access EKSCluster"
 
-  create_role                   = true
-  role_name                     = "devs-GitHubActions-${module.eks.cluster_name}"
-  provider_url                  = aws_iam_openid_connect_provider.GitHub_Actions.url
-  # https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html#idp_oidc_Create_GitHub
-  oidc_fully_qualified_subjects = ["repo:Annika1712/devops-final-project:ref:refs/heads/annika/terraform/iam"]
-  oidc_fully_qualified_audiences = aws_iam_openid_connect_provider.GitHub_Actions.client_id_list
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "eks:DescribeCluster",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role" "github_oidc_development" {
+  name = "eks_github_oidc-${module.eks.cluster_name}"
+  assume_role_policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Federated": "arn:aws:iam::851725332718:oidc-provider/token.actions.githubusercontent.com"
+        },
+        "Action": "sts:AssumeRoleWithWebIdentity",
+        "Condition": {
+          "StringEquals": {
+            "token.actions.githubusercontent.com:aud": ["sts.amazonaws.com"],
+            "token.actions.githubusercontent.com:sub": ["repo:Annika1712/devops-final-project:ref:refs/heads/annika/terraform/iam-cicd"]
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "Github_OIDC"{
+  role       = aws_iam_role.github_oidc_development.name
+  policy_arn = aws_iam_policy.EKS_Access.arn
 }
 
 resource "aws_eks_access_entry" "GithubActions" {
   cluster_name = module.eks.cluster_name
-  principal_arn = module.Github_Actions_development_role.iam_role_arn
+  principal_arn = aws_iam_role.github_oidc_development.arn
 }
 
 resource "aws_eks_access_policy_association" "GitHubActions" {

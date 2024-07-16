@@ -2,9 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis-deploy
-  namespace: development
+  namespace: test
   labels:
-    app: redis
+    app.kubernetes.io/created-by: team-1
+    app.kubernetes.io/type: app
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/component: database
 spec:
   replicas: 1
   selector:

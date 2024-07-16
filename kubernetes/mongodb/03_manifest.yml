@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongo-deploy
-  namespace: development
+  namespace: test
   labels:
     app: mongo
 spec:
@@ -17,12 +17,20 @@ spec:
         app: mongo
     spec:
       containers:
-        - name: mongo
-          image: mongo:latest
+        - name: mongodb
+          image: mongo
+          ports:
+            - containerPort: 27017
           env:
             - name: MONGO_INITDB_ROOT_USERNAME
               value: root
             - name:  MONGO_INITDB_ROOT_PASSWORD
               value: example
-          ports:
-            - containerPort: 27017
+          volumeMounts:
+            - name: persistent-storage
+              mountPath: /mongo/data
+      volumes:
+      - name: persistent-storage
+        persistentVolumeClaim:
+          claimName: mongo-ebs-claim
+

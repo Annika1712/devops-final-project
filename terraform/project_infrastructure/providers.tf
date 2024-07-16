@@ -38,14 +38,11 @@ terraform {
   }
 
   required_version = "~> 1.3"
-  
-  # From module: terraform/s3bucket_dynamo
-  backend "s3" {
+    backend "s3" {
     bucket = "team1-remotestate"
     key = "terraform.tfstate"
     region = "eu-central-1"
     dynamodb_table = "team1-db_name"
   }
-  
 }
 

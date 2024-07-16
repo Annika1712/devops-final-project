@@ -26,5 +26,6 @@ jobs:
     - name: Install kubectl
       uses: azure/setup-kubectl@v3
       id: install
+    - run: kubectl config set-context --current --namespace=development
     - run: kubectl apply -f frontend-deployment.yml
     

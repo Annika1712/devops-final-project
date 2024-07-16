@@ -14,13 +14,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Install aws CLI
-      run: aws eks update-kubeconfig --region eu-central-1 --name team-1-fp-eks-wMH7zKlz
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v1.7.0
       with:
         role-to-assume: arn:aws:iam::851725332718:role/devs-GitHubActions-team-1-fp-eks-wMH7zKlz
+        role-session-name: MyFirstTest
         aws-region: eu-central-1
+    - name: Install aws CLI
+      run: aws eks update-kubeconfig --region eu-central-1 --name team-1-fp-eks-wMH7zKlz
     - name: Install kubectl
       uses: azure/setup-kubectl@v3
       id: install

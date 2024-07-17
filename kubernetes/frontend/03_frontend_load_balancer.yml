@@ -8,10 +8,8 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    - port: 3000
+    - port: 80
       targetPort: 3000
       name: http
   selector:
-    app.kubernetes.io/name: frontend
-    app.kubernetes.io/instance: frontend
-    app.kubernetes.io/component: service
+    app: frontend

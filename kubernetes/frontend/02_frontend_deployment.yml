@@ -18,17 +18,17 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: kholha/expency-frontend:latest
+          image: annika1712/exp-frontend
           ports:
             - containerPort: 3000
           env:
-            - name: next-public-api-url
+            - name: NEXT_PUBLIC_API_URL
               valueFrom:
                 configMapKeyRef:
-                  name: frontend-config-dev
+                  name: frontend-config
                   key: NEXT_PUBLIC_API_URL
-            - name: next-app-api-key
+            - name: NEXT_APP_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: frontend-secret-dev
+                  name: frontend-secret
                   key: NEXT_APP_API_KEY

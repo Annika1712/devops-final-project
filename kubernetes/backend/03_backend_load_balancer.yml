@@ -8,10 +8,8 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    - port: 8706
+    - port: 80
       targetPort: 8706
       name: http
   selector:
-    app.kubernetes.io/name: backend
-    app.kubernetes.io/instance: backend
-    app.kubernetes.io/component: service
+    app: backend

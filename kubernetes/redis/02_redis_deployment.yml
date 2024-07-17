@@ -10,7 +10,7 @@ metadata:
 #    app.kubernetes.io/name: redis
 #    app.kubernetes.io/component: database
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       app: redis

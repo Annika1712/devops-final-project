@@ -10,14 +10,14 @@ spec:
   replicas: 4
   selector:
     matchLabels: 
-      app: expense-frontend
+      app: frontend
   template:
     metadata:
       labels:
-        app: expense-frontend
+        app: frontend
     spec:
       containers:
-        - name: frontend-expense
+        - name: frontend
           image: kholha/expency-frontend:latest
           ports:
             - containerPort: 3000

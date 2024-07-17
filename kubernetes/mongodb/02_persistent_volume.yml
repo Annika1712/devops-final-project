@@ -2,16 +2,13 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mongo-ebs-claim
-  namespace: test
+  namespace: development
   labels:
     app.kubernetes.io/team: database
 spec:
-#  restartPolicy: Never
   accessModes:
     - ReadWriteOnce
-  storageClassName: mongo-ebs-class
+  storageClassName: gp2
   resources:
     requests:
-      storage: 8Gi
-
-# failed to provision volume with StorageClass "mongo-ebs-class": rpc error: code = InvalidArgument desc = Volume capabilities not supported
+      storage: 15Gi

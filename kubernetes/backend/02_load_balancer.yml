@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: load-balancer-backend
-  namespace: test
+  namespace: development
   labels:
     app.kubernetes.io/name: load-balancer-backend
 spec:
@@ -12,6 +12,6 @@ spec:
       targetPort: 8706
       name: http
   selector:
-    app.kubernetes.io/name: expency-backend
-    app.kubernetes.io/instance: expency-backend
+    app.kubernetes.io/name: backend
+    app.kubernetes.io/instance: backend
     app.kubernetes.io/component: service

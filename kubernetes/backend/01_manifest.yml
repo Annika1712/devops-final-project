@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: expency-backend-deploy
-  namespace: test
+  name: backend-deployment
+  namespace: development
   labels:
-    app: expency-backend
+    app: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: expency-backend
+      app: backend
   template:
     metadata:
-      name: expency-backend
+      name: backend
       labels:
-        app: expency-backend
+        app: backend
     spec:
       containers:
-        - name: expency-backend
+        - name: backend
           image: kholha/expency-backend:latest
           env:
             - name: MONGO_URI
-              value: "mongodb://root:example@172.20.212.140:27017"
+              value: "mongodb://root:example@mongo:27017"
             - name:  REDIS_HOST
-              value: 172.20.96.104
+              value: redis
             - name: REDIS_PORT
               value: "6379"
             - name: REDIS_PASSWORD

@@ -1,13 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis-deploy
-  namespace: test
+  name: redis-deployment
+  namespace: development
   labels:
-    app.kubernetes.io/created-by: team-1
-    app.kubernetes.io/type: app
-    app.kubernetes.io/name: redis
-    app.kubernetes.io/component: database
+    app: redis
+#    app.kubernetes.io/created-by: team-1
+#    app.kubernetes.io/type: app
+#    app.kubernetes.io/name: redis
+#    app.kubernetes.io/component: database
 spec:
   replicas: 1
   selector:
@@ -22,5 +23,9 @@ spec:
       containers:
         - name: redis
           image: redis:latest
+#          resources:
+#            requests:
+#              cpu: 100m
+#              memory: 100Mi
           ports:
             - containerPort: 6379

@@ -29,3 +29,17 @@ Next step: deploy backend application:
 ```
 kubectl apply -f .\backend\
 ```
+
+Next step: setup value for NEXT_PUBLIC_API_URL in `.\frontend\01_frontend_config_map_secrets.yml`
+
+
+Next step: deploy frontend application:
+```
+kubectl apply -f .\frontend\
+```
+
+Useful commands:
+```
+kubectl get --namespace=development pods
+kubectl get --namespace=development services
+```

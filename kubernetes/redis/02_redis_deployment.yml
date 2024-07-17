@@ -29,3 +29,10 @@ spec:
 #              memory: 100Mi
           ports:
             - containerPort: 6379
+          volumeMounts:
+            - name: persistent-storage
+              mountPath: /redis/data
+      volumes:
+        - name: persistent-storage
+          persistentVolumeClaim:
+            claimName: redis-ebs-claim

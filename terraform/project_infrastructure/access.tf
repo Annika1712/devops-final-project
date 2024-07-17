@@ -70,6 +70,7 @@ resource "aws_iam_openid_connect_provider" "GitHub_Actions" {
 
 # Role to provide access to EKS Cluster, Trust policy included
 # https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html#idp_oidc_Create_GitHub
+# https://aws.amazon.com/blogs/security/how-to-use-trust-policies-with-iam-roles/ for setting up the trust policy when the session gets deleted every time
 resource "aws_iam_role" "github_oidc_development" {
   name = "eks_github_oidc-${module.eks.cluster_name}"
   assume_role_policy = jsonencode({
@@ -96,9 +97,17 @@ resource "aws_iam_role" "github_oidc_development" {
             "Sid": "Allow",
             "Effect": "Allow",
             "Principal": {
-                "Service": "sts.amazonaws.com"
+                "AWS": [
+                    "arn:aws:iam::851725332718:root"
+                ]
             },
-            "Action": "sts:AssumeRole"
+            "Action": "sts:AssumeRole",
+            "Condition": {
+                "ArnEquals": {
+                    "aws:PrincipalArn": "arn:aws:iam::851725332718:role/eks_github_oidc-${module.eks.cluster_name}"
+                }
+            }
+
         }
     ]
   })

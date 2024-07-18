@@ -104,9 +104,12 @@ resource "aws_iam_role" "github_oidc_development" {
             "token.actions.githubusercontent.com:aud" : [
               "sts.amazonaws.com"
             ],
-            "token.actions.githubusercontent.com:sub" : [
-              "repo:Annika1712/devops-final-project:ref:refs/heads/annika/terraform/iam-cicd"
-            ]
+#             "token.actions.githubusercontent.com:sub" : [
+#               "repo:Annika1712/devops-final-project:ref:refs/heads/annika/terraform/iam-cicd"
+#             ]
+          },
+          "StringLike": {
+            "token.actions.githubusercontent.com:sub": "repo:Annika1712/devops-final-project:*"
           }
         }
       },

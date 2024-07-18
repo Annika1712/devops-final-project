@@ -73,6 +73,7 @@ module "eks" {
       service_account_role_arn = module.irsa-ebs-csi.iam_role_arn
     }
   }
+  enable_irsa  = true
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
@@ -122,11 +123,3 @@ module "eks" {
 }
 
 
-
-module "alb_ingress_controller"{
-  source = "iplabs/alb-ingress-controller/kubernetes"
-  version = "3.4.0"
-  k8s_cluster_name = local.cluster_name
-  k8s_namespace = "development"
-  k8s_cluster_type = "eks"
-}

@@ -21,12 +21,18 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: configure aws credentials
-      uses: aws-actions/configure-aws-credentials@v1.7.0
+#    - name: configure aws credentials
+#      uses: aws-actions/configure-aws-credentials@v1.7.0
+#      with:
+#        role-to-assume: arn:aws:iam::851725332718:role/eks_github_oidc-team-1-fp-eks-9deZbI34
+#        aws-region: eu-central-1
+#        role-session-name: GithubActionsSession
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: arn:aws:iam::851725332718:role/eks_github_oidc-team-1-fp-eks-9deZbI34
-        aws-region: eu-central-1
-        role-session-name: GithubActionsSession
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ vars.AWS_REGION }}
 
     - name: Setup connection with AWS EKS
 #      run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION --role-arn $ROLE_ARN

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: development
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: kholha/exp-backend:latest
+          ports:
+            - containerPort: 8706
+          env:
+            - name: DATABASE_URI
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secrets
+                  key: mongodb-uri
+            - name:  REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secrets
+                  key: redis-service-host
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secrets
+                  key: redis-service-port
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secrets
+                  key: redis-service-password

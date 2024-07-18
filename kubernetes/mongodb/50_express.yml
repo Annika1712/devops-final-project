@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: eks-mongo-express-deployment
-  namespace: development
+#  namespace: development
   labels:
     app: mongo-express
 spec:

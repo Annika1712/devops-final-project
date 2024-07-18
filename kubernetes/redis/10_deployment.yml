@@ -5,6 +5,10 @@ metadata:
   namespace: development
   labels:
     app: redis
+#    app.kubernetes.io/created-by: team-1
+#    app.kubernetes.io/type: app
+#    app.kubernetes.io/name: redis
+#    app.kubernetes.io/component: database
 spec:
   replicas: 1
   selector:

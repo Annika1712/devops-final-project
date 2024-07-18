@@ -46,6 +46,8 @@ module "irsa-ebs-csi" {
   role_policy_arns              = [data.aws_iam_policy.ebs_csi_policy.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
 }
+<<<<<<< HEAD
+=======
 
 # EFS
 data "aws_iam_policy" "efs_csi_policy" {
@@ -183,3 +185,4 @@ resource "aws_eks_access_policy_association" "GitHubActions" {
 }
 
 
+>>>>>>> 1458ecf6502d9518cab52c6e8e287366bda8f9d8

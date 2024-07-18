@@ -27,22 +27,12 @@ jobs:
         role-to-assume: arn:aws:iam::851725332718:role/eks_github_oidc-team-1-fp-eks-9deZbI34
         aws-region: eu-central-1
         role-session-name: GithubActionsSession
-#    - name: Configure AWS credentials
-#      uses: aws-actions/configure-aws-credentials@v1
-#      with:
-#        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#        aws-region: ${{ vars.AWS_REGION }}
 
     - name: Setup connection with AWS EKS
       run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION --role-arn $ROLE_ARN
-#      run: aws eks update-kubeconfig --region eu-central-1 --name team-1-fp-eks-9deZbI34 --role-arn arn:aws:iam::851725332718:role/eks_github_oidc-team-1-fp-eks-9deZbI34
 
     - name: Switch namespace to testing
-      run: kubectl config set-context --current --namespace=testing
-
-#    - name: Create namespace
-#      run: kubectl create namespace testing
+      run: kubectl config set-context --current --namespace=development
 
     - name: Deploy Redis to AWS EKS
       run: |

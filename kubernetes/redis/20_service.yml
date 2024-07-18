@@ -11,7 +11,4 @@ spec:
     - port: 6379
       targetPort: 6379
   selector:
-#    app.kubernetes.io/name: redis
-#    app.kubernetes.io/instance: redis
-#    app.kubernetes.io/component: service
      app: redis

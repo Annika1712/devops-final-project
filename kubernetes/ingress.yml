@@ -5,17 +5,18 @@ metadata:
   name: ingress
   namespace: development
   annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/schema: internet-facing
+    #kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
 spec:
+  ingressClassName: alb
   rules:
     - http:
-      paths:
-        path: "/"
-        pathType: Prefix
-        backend:
-          service:
-            name: frontend-service
-            port:
-              number: "80"
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 80

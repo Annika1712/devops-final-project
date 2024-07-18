@@ -1,23 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongo-deployment
+  name: eks-mongodb-deployment
   namespace: development
   labels:
-    app: mongo
+    app: mongodb
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
-      app: mongo
+      app: mongodb
   template:
     metadata:
-      name: mongo
       labels:
-        app: mongo
+        app: mongodb
     spec:
       containers:
-        - name: mongodb
+        - name: mongo
           image: mongo
           ports:
             - containerPort: 27017
@@ -25,13 +24,10 @@ spec:
             - name: MONGO_INITDB_ROOT_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: backend-secrets
-                  key: MONGO_INITDB_ROOT_USERNAME
+                  name: mongodb-secrets
+                  key: mongodb-root-username
             - name: MONGO_INITDB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: backend-secrets
-                  key: MONGO_INITDB_ROOT_PASSWORD
-           
-
-
+                  name: mongodb-secrets
+                  key: mongodb-root-password

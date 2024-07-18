@@ -31,7 +31,7 @@ kubectl apply -f .\backend\
 ```
 
 Next step: setup value for NEXT_PUBLIC_API_URL in `.\frontend\01_frontend_config_map_secrets.yml`
-
+Tip: run kubectl get svc --namespace=development and retrieve the external ip from backend. This is the value of NEXT_PUBLIC_API_URL
 
 Next step: deploy frontend application:
 ```

@@ -5,7 +5,7 @@ metadata:
   name: ingress
   namespace: development
   annotations:
-    kubernetes.io/ingress.class: ingressClass
+    kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/schema: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
 spec:

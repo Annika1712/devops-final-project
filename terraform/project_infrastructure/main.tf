@@ -72,9 +72,6 @@ module "eks" {
     aws-ebs-csi-driver = {
       service_account_role_arn = module.irsa-ebs-csi.iam_role_arn
     }
-    aws-efs-csi-driver = {
-      service_account_role_arn = module.irsa-efs-csi.iam_role_arn
-    }
   }
   enable_irsa  = true
 

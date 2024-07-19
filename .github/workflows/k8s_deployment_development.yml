@@ -34,6 +34,13 @@ jobs:
     - name: Switch namespace to testing
       run: kubectl config set-context --current --namespace=development
 
+    - name: Alter configmap and apply
+      run: |
+        kubectl apply -f ./kubernetes/ingress
+        sleep 30s
+        export BACKEND_HOSTNAME=$(kubectl -n development get ingress ingress  -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+        envsubst < ./kubernetes/frontend/10_config_map.yml | kubectl apply -f -
+        
     - name: Deploy Redis to AWS EKS
       run: |
         kubectl apply -f ./kubernetes/redis/10_deployment.yml

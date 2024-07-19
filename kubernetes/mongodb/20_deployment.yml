@@ -31,3 +31,10 @@ spec:
                 secretKeyRef:
                   name: mongodb-secrets
                   key: mongodb-root-password
+          volumeMounts:
+            - mountPath: /data/db
+              name: persistent-volume
+      volumes:
+        - name: persistent-volume
+          persistentVolumeClaim: 
+            claimName: ebs-claim

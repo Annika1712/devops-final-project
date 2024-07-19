@@ -19,11 +19,11 @@ spec:
                 name: frontend-service
                 port:
                   number: 3000
-          - path: "api/expenses"
+          - path: "/api/expenses"
             pathType: Prefix
             backend: 
               service:
-                name: backend-service
+                name: backend-lb
                 port: 
                   number: 8706
                   

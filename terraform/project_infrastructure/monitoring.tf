@@ -1,4 +1,9 @@
-# https://github.com/DNXLabs/terraform-aws-eks-grafana-prometheus/blob/master/README.md
+# To run if you haven't created a monitoring namespace manually
+# resource "kubernetes_namespace" "monitoring" {
+#  metadata {
+#    name = "monitoring"
+#  }
+#}
 
 resource "helm_release" "prometheus_grafana" {
   name       = "monitoring"

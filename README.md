@@ -7,9 +7,17 @@
 
 - Used Terraform IaC tool to define our infrastructure.
 
-#### 2. Your infrastructure should include:
+#### 2. CI/CD Pipeline Configuration:
 
-- Compute resources (e.g., EC2 instances, Kubernetes clusters).
-- Networking resources (e.g., VPC, subnets, security groups).
-- Storage resources (e.g., S3 buckets, RDS instances).
-- Continuous Integration/Continuous Deployment (CI/CD):
+#### 3. [Application Containerization and Orchestration](./K8s_README.md):
+
+- Used docker for Application Containerization
+- Used AWS EKS (Kubernetes) for Application Orchestration
+
+#### 4. [Monitoring and Logging Configuration](./monitoring_README.md):
+
+- Used Grafana and Prometheus for logging and monitoring
+
+#### 5. Autoscaling Configuration:
+
+- Used Karpenter and managed nodegroups for autoscaling

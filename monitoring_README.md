@@ -4,4 +4,4 @@ After you've successfully run terraform you can access both Prometheus and Grafa
 To find the url on which your grafana and prometheus can be reached run: 'kubectl get svc -n monitoring'
 The external ip is your url and take note of the port.
 
-The default login for grafana is admin with prom-operator as password.
+The default login for grafana is 'admin' with 'prom-operator' as password.

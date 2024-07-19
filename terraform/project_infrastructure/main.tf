@@ -12,10 +12,10 @@ data "aws_availability_zones" "available" {
 
 locals {
   # Network configs
-  vpc_name     = "team-1-fp-vpc"
+  vpc_name = "team-1-fp-vpc"
 
   # EKS configs
-  cluster_name = "team-1-fp-eks-${random_string.suffix.result}"
+  cluster_name  = "team-1-fp-eks-${random_string.suffix.result}"
   instance_type = "t3.medium"
 
 }
@@ -37,8 +37,8 @@ module "vpc" {
   cidr = "10.0.0.0/16"
   azs  = slice(data.aws_availability_zones.available.names, 0, 2)
 
-#   private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-#   public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+  #   private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  #   public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
 
   private_subnets = ["10.0.1.0/24", "10.0.5.0/24"]
   public_subnets  = ["10.0.2.0/24", "10.0.6.0/24"]
@@ -66,14 +66,14 @@ module "eks" {
   cluster_name    = local.cluster_name
   cluster_version = "1.30"
 
-  cluster_endpoint_public_access           = true
+  cluster_endpoint_public_access = true
 
   cluster_addons = {
     aws-ebs-csi-driver = {
       service_account_role_arn = module.irsa-ebs-csi.iam_role_arn
     }
   }
-  enable_irsa  = true
+  enable_irsa = true
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets

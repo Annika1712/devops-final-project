@@ -2,9 +2,9 @@ name: Deploy applications on AWS EKS
 
 on:
   push:
-    branches: [ "olha/8-cicd-developer-branch" ]
+    branches: [ "devs" ]
   pull_request:
-    branches: [ "olha/8-cicd-developer-branch" ]
+    branches: [ "devs" ]
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read  # This is required for actions/checkout

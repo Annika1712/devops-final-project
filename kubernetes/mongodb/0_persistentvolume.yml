@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-claim
+  namespace: development
+spec:
+  accessModes:
+    - ReadWriteOnce # file.csi.azure.com only supports ReadWriteMany
+  storageClassName: ebs-class
+  resources:
+    requests:
+      storage: 15Gi

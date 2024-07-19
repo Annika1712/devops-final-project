@@ -60,15 +60,13 @@ jobs:
         kubectl apply -f ./kubernetes/backend/20_secrets.yml
         kubectl apply -f ./kubernetes/backend/30_deployment.yml
         kubectl apply -f ./kubernetes/backend/40_service.yml
-        kubectl apply -f ./kubernetes/backend/50_load_balancer.yml
 
     - name: Deploy Backend application to AWS EKS
       run: |
         kubectl apply -f ./kubernetes/frontend/10_config_map.yml
         kubectl apply -f ./kubernetes/frontend/20_secrets.yml
         kubectl apply -f ./kubernetes/frontend/30_deployment.yml
-        kubectl apply -f ./kubernetes/frontend/40_service.yml
-        kubectl apply -f ./kubernetes/frontend/50_load_balancer.yml     
+        kubectl apply -f ./kubernetes/frontend/40_service.yml   
              
 
     

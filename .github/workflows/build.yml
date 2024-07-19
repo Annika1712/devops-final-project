@@ -35,8 +35,8 @@ jobs:
       run: |
         kubectl apply -f ./kubernetes/ingress
         sleep 30s
-        export BACKEND_HOSTNAME=$(kubectl -n annika get svc backend-lb -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-        envsubst < /kubernetes/frontend/frontend-configmap.yml | kubectl apply -f -
+        export BACKEND_HOSTNAME=$(kubectl -n development get ingress ingress  -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+        envsubst < ./kubernetes/frontend/frontend-configmap.yml | kubectl apply -f -
     
     - name: Apply kubernetes manifest files
       run: |

@@ -23,7 +23,7 @@ spec:
             pathType: Prefix
             backend: 
               service:
-                name: backend-lb
+                name: backend-service
                 port: 
                   number: 8706
                   

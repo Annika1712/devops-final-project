@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-configs
+  namespace: development
+data:
+  public_api_url: "$BACKEND_HOSTNAME"

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: development
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8706
+      targetPort: 8706

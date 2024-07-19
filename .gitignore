@@ -1,0 +1,6 @@
+.idea/
+expensy_backend/node_modules/
+expensy_backend/dist/
+
+expensy_frontend/node_modules/
+expensy_frontend/dist/

@@ -1,0 +1,72 @@
+name: Deploy applications on AWS EKS
+
+on:
+  push:
+    branches: [ "devs" ]
+  pull_request:
+    branches: [ "devs" ]
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
+env:
+  EKS_CLUSTER_NAME: ${{ vars.EKS_CLUSTER_NAME}}
+  AWS_REGION: ${{ vars.AWS_REGION}}
+  ROLE_ARN: ${{ vars.AWS_EKS_ROLE_ARN}}
+
+jobs: 
+  kubernetes:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v1.7.0
+      with:
+        role-to-assume: arn:aws:iam::851725332718:role/eks_github_oidc-team-1-fp-eks-9deZbI34
+        aws-region: eu-central-1
+        role-session-name: GithubActionsSession
+
+    - name: Setup connection with AWS EKS
+      run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION --role-arn $ROLE_ARN
+
+    - name: Switch namespace to testing
+      run: kubectl config set-context --current --namespace=development
+
+    - name: Alter configmap and apply
+      run: |
+        kubectl apply -f ./kubernetes/ingress
+        sleep 30s
+        export BACKEND_HOSTNAME=$(kubectl -n development get ingress ingress  -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+        envsubst < ./kubernetes/frontend/10_config_map.yml | kubectl apply -f -
+        
+    - name: Deploy Redis to AWS EKS
+      run: |
+        kubectl apply -f ./kubernetes/redis/10_deployment.yml
+        kubectl apply -f ./kubernetes/redis/20_service.yml
+
+    - name: Deploy MongoDB and Mongo-Express to AWS EKS
+      run: |
+        kubectl apply -f ./kubernetes/mongodb/10_secrets.yml
+        kubectl apply -f ./kubernetes/mongodb/20_deployment.yml
+        kubectl apply -f ./kubernetes/mongodb/30_service.yml
+        kubectl apply -f ./kubernetes/mongodb/40_config_map.yml
+        kubectl apply -f ./kubernetes/mongodb/50_express.yml
+        kubectl apply -f ./kubernetes/mongodb/60_load_balancer_mongo_express.yml
+
+    - name: Deploy Backend application to AWS EKS
+      run: |
+        kubectl apply -f ./kubernetes/backend/20_secrets.yml
+        kubectl apply -f ./kubernetes/backend/30_deployment.yml
+        kubectl apply -f ./kubernetes/backend/40_service.yml
+
+    - name: Deploy Backend application to AWS EKS
+      run: |
+        kubectl apply -f ./kubernetes/frontend/10_config_map.yml
+        kubectl apply -f ./kubernetes/frontend/20_secrets.yml
+        kubectl apply -f ./kubernetes/frontend/30_deployment.yml
+        kubectl apply -f ./kubernetes/frontend/40_service.yml   
+             
+
+    

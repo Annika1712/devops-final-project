@@ -47,23 +47,6 @@ module "irsa-ebs-csi" {
   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
 }
 
-# EFS
-data "aws_iam_policy" "efs_csi_policy" {
-  arn = "arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy"
-}
-
-module "irsa-efs-csi" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version = "5.41.0"
-
-  create_role                   = true
-  role_name                     = "AwsEKSEFSCSIRole-${module.eks.cluster_name}"
-  provider_url                  = module.eks.oidc_provider
-  role_policy_arns              = [data.aws_iam_policy.efs_csi_policy.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:efs-csi-controller-sa"]
-}
-
-
 #########################################################
 # Github Access
 #########################################################

@@ -4,4 +4,4 @@ metadata:
   name: frontend-configs
   namespace: development
 data:
-  public_api_url: "http://aa8fd6c92e1314e2c81c4191041e5476-1537797463.us-east-1.elb.amazonaws.com:8706"
+  public_api_url: "$BACKEND_HOSTNAME:8706"

@@ -4,17 +4,17 @@
 
 # Administrator Access
 resource "aws_eks_access_entry" "Admin" {
-  for_each = var.arn_administrators
-  cluster_name = module.eks.cluster_name
+  for_each      = var.arn_administrators
+  cluster_name  = module.eks.cluster_name
   principal_arn = each.key
-  type = "STANDARD"
+  type          = "STANDARD"
 }
 
 resource "aws_eks_access_policy_association" "Admin" {
-  for_each = aws_eks_access_entry.Admin
+  for_each     = aws_eks_access_entry.Admin
   cluster_name = module.eks.cluster_name
   # https://docs.aws.amazon.com/eks/latest/userguide/access-policies.html#access-policy-permissions
-  policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
   principal_arn = aws_eks_access_entry.Admin[each.key].principal_arn
 
   access_scope {
@@ -87,31 +87,31 @@ resource "aws_iam_role" "github_oidc_development" {
             "token.actions.githubusercontent.com:aud" : [
               "sts.amazonaws.com"
             ],
-#             "token.actions.githubusercontent.com:sub" : [
-#               "repo:Annika1712/devops-final-project:ref:refs/heads/annika/terraform/iam-cicd"
-#             ]
+            #             "token.actions.githubusercontent.com:sub" : [
+            #               "repo:Annika1712/devops-final-project:ref:refs/heads/annika/terraform/iam-cicd"
+            #             ]
           },
-          "StringLike": {
-            "token.actions.githubusercontent.com:sub": "repo:Annika1712/devops-final-project:*"
+          "StringLike" : {
+            "token.actions.githubusercontent.com:sub" : "repo:Annika1712/devops-final-project:*"
           }
         }
       },
-        {
-            "Sid": "Allow",
-            "Effect": "Allow",
-            "Principal": {
-                "AWS": [
-                    "arn:aws:iam::851725332718:root"
-                ]
-            },
-            "Action": "sts:AssumeRole",
-            "Condition": {
-                "ArnEquals": {
-                    "aws:PrincipalArn": "arn:aws:iam::851725332718:role/eks_github_oidc-${module.eks.cluster_name}"
-                }
-            }
-
+      {
+        "Sid" : "Allow",
+        "Effect" : "Allow",
+        "Principal" : {
+          "AWS" : [
+            "arn:aws:iam::851725332718:root"
+          ]
+        },
+        "Action" : "sts:AssumeRole",
+        "Condition" : {
+          "ArnEquals" : {
+            "aws:PrincipalArn" : "arn:aws:iam::851725332718:role/eks_github_oidc-${module.eks.cluster_name}"
+          }
         }
+
+      }
     ]
   })
 }
@@ -124,24 +124,24 @@ resource "aws_iam_policy" "EKS_Access" {
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
   policy = jsonencode({
-	"Version": "2012-10-17",
-	"Statement": [
-		{
-			"Sid": "EKSAccess",
-			"Effect": "Allow",
-			"Action": [
-				"eks:DescribeCluster"
-			],
-			"Resource": "*"
-		},
-		{
-			"Sid": "AssumeRole",
-			"Effect": "Allow",
-			"Action": "sts:AssumeRole",
-			"Resource": "*"
-		}
-	]
-})
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Sid" : "EKSAccess",
+        "Effect" : "Allow",
+        "Action" : [
+          "eks:DescribeCluster"
+        ],
+        "Resource" : "*"
+      },
+      {
+        "Sid" : "AssumeRole",
+        "Effect" : "Allow",
+        "Action" : "sts:AssumeRole",
+        "Resource" : "*"
+      }
+    ]
+  })
 }
 
 # Associate EKS Access policy with the role

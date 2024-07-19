@@ -15,6 +15,7 @@ resource "helm_release" "prometheus_grafana" {
     name  = "prometheus.service.type"
     value = "LoadBalancer"
   }
-
 }
+
+
 

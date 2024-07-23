@@ -5,20 +5,16 @@
 #  }
 #}
 
-resource "helm_release" "prometheus_grafana" {
+resource "helm_release" "prometheus" {
   name       = "monitoring"
-  chart      = "kube-prometheus-stack"
+  chart      = "prometheus"
   repository = "https://prometheus-community.github.io/helm-charts"
-  version    = "61.3.2"
+  version    = "25.24.1"
   namespace  = "monitoring"
 
   set {
-    name  = "grafana.service.type"
-    value = "LoadBalancer"
-  }
-  set {
     name  = "prometheus.service.type"
-    value = "LoadBalancer"
+    value = "NodePort"
   }
 }
 

@@ -1,4 +1,3 @@
-
 module "irsa_alb_ingress_controller" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
   version = "5.41.0"
@@ -8,35 +7,6 @@ module "irsa_alb_ingress_controller" {
   provider_url                  = module.eks.oidc_provider
   role_policy_arns              = [aws_iam_policy.my_custom_policy.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
-}
-
-resource "helm_release" "aws_load_balancer_controller" {
-  name = "aws-load-balancer-controller"
-
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-load-balancer-controller"
-  namespace  = "kube-system"
-  version    = "1.4.4"
-
-  set {
-    name  = "replicaCount"
-    value = "1"
-  }
-
-  set {
-    name  = "clusterName"
-    value = module.eks.cluster_name
-  }
-
-  set {
-    name  = "serviceAccount.name"
-    value = "aws-load-balancer-controller"
-  }
-
-  set {
-    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-    value = module.irsa_alb_ingress_controller.iam_role_arn
-  }
 }
 
 resource "aws_iam_policy" "my_custom_policy" {

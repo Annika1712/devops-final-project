@@ -35,19 +35,10 @@ terraform {
       source  = "hashicorp/cloudinit"
       version = "~> 2.3.4"
     }
-
-    helm = {
-      source  = "hashicorp/helm"
-      version = ">= 2.6.0"
-    }
   }
 
   required_version = "~> 1.3"
-  backend "s3" {
-    bucket         = "team1-remotestate"
-    key            = "terraform.tfstate"
-    region         = "eu-central-1"
-    dynamodb_table = "team1-db_name"
-  }
 }
+
+
 

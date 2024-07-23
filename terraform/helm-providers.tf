@@ -1,5 +1,5 @@
 data "aws_eks_cluster" "target" {
-  name = local.cluster_name
+  name = module.AWS.cluster_name
 }
 
 data "aws_eks_cluster_auth" "aws_iam_authenticator" {

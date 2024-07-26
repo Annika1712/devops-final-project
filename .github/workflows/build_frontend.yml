@@ -2,9 +2,9 @@ name: Build and Publish frontend with Docker
 
 on:
   push:
-    branches: [ "annika/ci-cd" ]
-#    paths:
-#      - 'frontend/*'
+    branches: [ "devs" ]
+    paths:
+      - 'frontend/*'
 
 jobs:
   deploy:
@@ -35,5 +35,5 @@ jobs:
           push: true
           tags: |
             annika1712/exp-frontend:latest
-            annika1712/exp-frontend:1.0.0
+            annika1712/exp-frontend:2.0.0
 

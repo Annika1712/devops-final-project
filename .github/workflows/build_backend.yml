@@ -2,9 +2,9 @@ name: Build and Publish backend with Docker
 
 on:
   push:
-    branches: [ "annika/ci-cd" ]
-#    paths:
-#      - 'backend/*'
+    branches: [ "devs" ]
+    paths:
+      - 'backend/*'
 
 jobs:
   deploy:
@@ -35,4 +35,4 @@ jobs:
           push: true
           tags: |
             annika1712/exp-backend:latest
-            annika1712/exp-backend:1.0.0
+            annika1712/exp-backend:2.0.0

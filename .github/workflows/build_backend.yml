@@ -2,7 +2,7 @@ name: Build and Publish backend with Docker
 
 on:
   push:
-    branches: [ "devs" ]
+    branches: [ "annika/ci-cd" ]
 #    paths:
 #      - 'backend/*'
 

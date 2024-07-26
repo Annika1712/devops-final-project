@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: kholha/exp-backend:latest
+          image: annika1712/exp-backend:latest
           ports:
             - containerPort: 8706
           env:

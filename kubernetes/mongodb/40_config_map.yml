@@ -4,4 +4,4 @@ metadata:
   name: mongodb-configmap
   namespace: development
 data:
-  database_server: mongodb-service
+  database_server: mongo

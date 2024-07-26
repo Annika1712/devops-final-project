@@ -31,7 +31,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
-          context: "./frontend"
+          context: "{{defaultContext}}:frontend"
           push: true
           tags: |
             annika1712/exp-frontend:latest

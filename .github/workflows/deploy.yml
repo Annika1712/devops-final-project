@@ -54,6 +54,7 @@ jobs:
 
     - name: Deploy MongoDB and Mongo-Express to AWS EKS
       run: |
+        kubectl apply -f ./kubernetes/mongodb/0_persistentvolume.yml
         kubectl apply -f ./kubernetes/mongodb/10_secrets.yml
         kubectl apply -f ./kubernetes/mongodb/20_deployment.yml
         kubectl apply -f ./kubernetes/mongodb/30_service.yml

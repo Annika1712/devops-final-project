@@ -4,4 +4,4 @@ metadata:
   name: frontend-configs
   namespace: development
 data:
-  public_api_url: "$BACKEND_HOSTNAME"
+  public_api_url: "http://$BACKEND_HOSTNAME"

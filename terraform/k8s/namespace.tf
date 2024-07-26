@@ -1,6 +1,6 @@
-resource "kubernetes_namespace" "example" {
-    for_each = var.namespace
+resource "kubernetes_namespace_v1" "this" {
+  for_each = var.namespace
   metadata {
-    name = "${each.key}"
+    name = each.key
   }
 }

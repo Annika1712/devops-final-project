@@ -7,23 +7,23 @@ variable "region" {
 # VPC variables
 variable "vpc_name" {
   description = "VPC name"
-  type = string
-  default = "team-1-fp-vpc"
+  type        = string
+  default     = "team-1-fp-vpc"
 }
 
 # EKS variables
 variable "cluster_name" {
   description = "EKS cluster name (a suffix will be added to the end as unique identifier)"
-  type = string
-  default = "team-1-fp-eks"
-  
+  type        = string
+  default     = "team-1-fp-eks"
+
 }
 
 variable "instance_type" {
   description = "EKS worker node instance type"
-  type = string
-  default = "t3.medium"
-  
+  type        = string
+  default     = "t3.medium"
+
 }
 
 # IAM users

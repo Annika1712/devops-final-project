@@ -1,10 +1,13 @@
 name: Deploy applications on AWS EKS
 
-# Only trigger, when the build workflow succeeded or trigger manually
 on:
-  workflow_run:
-    workflows: ['Build and Publish backend with Docker', 'Build and Publish frontend with Docker']
-    types: [completed]
+  push:
+    branches: [ "annika/ci-cd" ]
+# Only trigger when the build workflow succeeded or trigger manually, but this only works in main
+#  workflow_dispatch:
+#  workflow_run:
+#    workflows: ["Build and Publish backend with Docker", "Build and Publish frontend with Docker"]
+#    types: [completed]
   
 
 permissions:

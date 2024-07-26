@@ -28,3 +28,7 @@ With running terraform you first create an eks cluster in AWS with vpc, and the 
 - Ingress with AWS ELB, to support access from the internet
 - Storage with AWS EBS, to support persistent volumes
 - Prometheus and Grafana, this will be installed inside the cluster in a dedicated namespace called 'monitoring'
+
+### Terraform destroy
+
+Before you destroy the cluster be mindful to run 'kubectl delete ingress --all' and 'kubectl delete pv --all' These resources are outside the cluster (so inside AWS) and are not tracked by terraform. If you do not delete them beforehand you might run into dependency issues and you would need to delete things manually.

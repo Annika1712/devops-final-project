@@ -5,7 +5,7 @@ After completion of either of those workflows, the deploy workflow gets triggere
 ## prerequisites
 For Docker to know which tags to apply use 'git tag -a' and 'git push origin tag <tag_name>'
 
-Before you start the workflow, make sure you have all variables. They are preset, but the following variables need to be present for the workflow to complete successfully.
+Before you start the workflow, make sure you have all variables. The variables are provided as output from running terraform (with the exception of AWS_REGION since the admin has to set it in providers.tf). The variables have to be set once and after the workflow can complete successfully. Please set,
 In secrets:
 DOCKERHUB_USERNAME
 DOCKERHUB_TOKEN

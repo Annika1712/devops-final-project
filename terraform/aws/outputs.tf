@@ -3,6 +3,13 @@ output "irsa_alb" {
 
 }
 
+output "github_role_arn" {
+  value = aws_iam_role.github_oidc_development.arn
+}
+
 output "cluster_name" {
   value = module.eks.cluster_name
 }
+
+
+

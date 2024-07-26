@@ -37,7 +37,7 @@ jobs:
     - name: Setup connection with AWS EKS
       run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION --role-arn $ROLE_ARN
 
-    - name: Switch namespace to testing
+    - name: Set namespace
       run: kubectl config set-context --current --namespace=$ENVIRONMENT
 
     - name: Alter configmap and apply

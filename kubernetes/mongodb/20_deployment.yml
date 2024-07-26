@@ -4,16 +4,16 @@ metadata:
   name: eks-mongodb-deployment
   namespace: development
   labels:
-    app: mongodb
+    app: mongo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongodb
+      app: mongo
   template:
     metadata:
       labels:
-        app: mongodb
+        app: mongo
     spec:
       containers:
         - name: mongo

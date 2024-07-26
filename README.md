@@ -6,7 +6,7 @@ In this project we'll build a solution for sample application (Expense Tracker) 
 
 - Used Terraform IaC tool to define our infrastructure.
 
-#### 2. CI/CD Pipeline Configuration:
+#### 2. [CI/CD Pipeline](./CICD_README.md) Configuration:
 
 - Used Github Actions to deploy the 4-tier application
 

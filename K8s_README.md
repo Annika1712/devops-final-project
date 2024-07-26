@@ -1,11 +1,5 @@
 # Orchestration with Kubernetes
 
-## Kubernetes project infrastructure
-After successfull configuration of [terraform](TERRAFORM_README.md) execute the commands:
-'kubectl apply -f kubernetes'
-
-This will create the storage class, ingress class and namespaces required for the CI/CD pipelines to properly execute.
-
 ## Orchestration with Kubernetes
 
 The folders 'frontend','backend','mongodb', and 'redis' will be applied to kubernetes with every push to the repository.

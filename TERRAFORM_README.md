@@ -16,7 +16,7 @@ This will create the s3 bucket and dynamodb for sharing the terraform state. Wit
 
 In the root directory of the project execute the command:
 
-`cd terraform/project_infrastructure`
+`cd terraform`
 
 `terraform init`
 `terraform plan`
@@ -24,13 +24,7 @@ In the root directory of the project execute the command:
 
 Before you run `terraform apply --auto-approve` make sure that you have helm installed on your computer, for instructions check: https://helm.sh/docs/intro/install/
 
-With running the project_infrastructure you create an eks cluster in AWS with vpc, and the right permissions included. Additionally it will create the EKS controllers for:
+With running terraform you first create an eks cluster in AWS with vpc, and the right permissions included. Second it will create all the necessary components inside kubernetes (e.g. namespaces, ingressclass, storageclass, etc.). Inside kubernetes the following controllers will be created.
 - Ingress with AWS ELB, to support access from the internet
 - Storage with AWS EBS, to support persistent volumes
 - Prometheus and Grafana, this will be installed inside the cluster in a dedicated namespace called 'monitoring'
-
-### [Kubernetes cluster](./K8s_README.md)
-To finish the project infrastructure execute the commands:
-'kubectl apply -f kubernetes'
-
-This will create the storage class, ingress class and namespaces required for the CI/CD pipelines to properly execute.

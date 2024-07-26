@@ -30,8 +30,8 @@ jobs:
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v1.7.0
       with:
-        role-to-assume: ${{ vars.AWS_EKS_ROLE_ARN}}
-        aws-region: ${{ vars.AWS_REGION}}
+        role-to-assume: $ROLE_ARN
+        aws-region: $AWS_REGION
         role-session-name: GithubActionsSession
 
     - name: Setup connection with AWS EKS

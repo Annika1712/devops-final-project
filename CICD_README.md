@@ -3,7 +3,7 @@ The pipeline consists of 2 phases: Build/Publish and Deploy. Build/Publish gets 
 After completion of either of those workflows, the deploy workflow gets triggered. You can also trigger the deploy workflow manually should you want to.
 
 ## prerequisites
-For Docker to know which tags to apply use 'git tag -a'
+For Docker to know which tags to apply use 'git tag -a' and 'git push origin tag <tag_name>'
 
 Before you start the workflow, make sure you have all variables. They are preset, but the following variables need to be present for the workflow to complete successfully.
 In secrets:
